@@ -26,7 +26,7 @@ Example user document:
         "id": "00001111",
         "username": "alex123",
         "email": "alex123@gmail.com",
-        "bookings" [
+        "bookings": [
             {
                 "id": "65118982",
                 "name": "...",
@@ -45,6 +45,5 @@ Example booking document:
         "id": "65118982",
         "name": "best pizza table for 2",
         "address": "43 smith drive",
-        ...
     }
 ~~~
