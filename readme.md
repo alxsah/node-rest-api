@@ -32,7 +32,6 @@ Example user document:
                 "name": "...",
                 "location": "...",
             }
-            ...
         ]
     }
 ~~~
