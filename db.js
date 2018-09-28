@@ -1,32 +1,34 @@
-const MongoClient = require('mongodb').MongoClient;
+const mongo = require('mongodb');
+const MongoClient = mongo.MongoClient;
 const url = "mongodb://localhost:27017/";
 
-const getUserById = (uid) =>
+const logError = err => console.log("Error connecting to database: ", err);
+
+const getUserById = uid =>
     MongoClient.connect(url)
     .then((db) => {
         console.log("Connected to database!");
         const dbo = db.db("mydb");
-        return dbo.collection("users").findOne({"uid": uid});
+        const oid = mongo.ObjectId(uid);
+        return dbo.collection("users").findOne({"_id": oid});
     })
     .catch((err) => {
-        console.log("Error connecting to database.")
+        logError(err);
     });
 
 const addBooking = (uid, booking) => 
     MongoClient.connect(url)
-    .then((db) => {
+    .then(db => {
         console.log("Connected to database!");
         const dbo = db.db("mydb");
-        return dbo.collection("users").findOne({"uid": uid}).then((user) => {
-            console.log(booking);
+        const oid = mongo.ObjectId(uid);
+        return dbo.collection("users").findOne({"_id": oid}).then((user) => {
             user.bookings.push(booking);
-            console.log(user.bookings);
-            return dbo.collection("users").replaceOne({"uid": uid}, {...user});
+            return dbo.collection("users").replaceOne({"_id": oid}, {...user});
         });
     })
-    .catch((err) => {
-        console.log("Error connecting to database:");
-        console.log(err);
+    .catch(err => {
+        logError(err);
     });
 
 module.exports = {getUserById, addBooking};

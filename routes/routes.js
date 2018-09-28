@@ -8,9 +8,13 @@ const appRouter = (app) => {
   // Get all bookings for UID
   app.get("/bookings/:uid", (req, res) => {
     console.log("getting bookings for UID ", req.params.uid);
-    db.getUserById(req.params.uid).then((userObj) => {
+    db.getUserById(req.params.uid).then(userObj => {
+        console.log(userObj);
         res.status(200).send(userObj.bookings);
-    });
+    })
+    .catch(err => {
+        console.log(err);
+    })
   });
 
   // Add booking to a UID
