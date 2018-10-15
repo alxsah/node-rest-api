@@ -1,0 +1,6 @@
+{
+    "development": {
+        "mongo_hostname": "localhost",
+        "mongo_port": "27017"
+    }
+}
