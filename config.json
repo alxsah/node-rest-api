@@ -2,7 +2,7 @@
     "development": {
         "app_port": 3000,
         "database": "mydb",
-        "mongo_hostname": "localhost",
+        "mongo_hostname": "mongo",
         "mongo_port": 27017,
         "collection": "bookings"
     }
