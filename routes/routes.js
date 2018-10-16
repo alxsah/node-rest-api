@@ -1,4 +1,4 @@
-const db = require('../db.js');
+const bookingController = require('../controllers/booking');
 
 const appRouter = (app) => {
   app.get('/', (req, res) => {
@@ -6,64 +6,19 @@ const appRouter = (app) => {
   });
 
   // Get all bookings
-  app.get('/bookings', (req, res) => {
-    console.log('getting all bookings');
-    db.getBookings()
-        .then((bookingsObj) => {
-          console.log(bookingsObj);
-          res.status(200).send(bookingsObj);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  });
+  app.get('/bookings', bookingController.getAllBookings);
 
   // Get a specific booking
-  app.get('/bookings/:id', (req, res) => {
-    console.log(`getting booking with id ${req.params.id}`);
-    db.getBooking(req.params.id)
-        .then((bookingsObj) => {
-          console.log(bookingsObj);
-          res.status(200).send(bookingsObj);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  });
+  app.get('/bookings/:id', (req, res) => bookingController.getBooking);
 
   // Add booking
-  app.post('/bookings', (req, res) => {
-    console.log('posting booking');
-    db.postBooking(req.body)
-        .then(() => {
-          res.status(201).send('Success!');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  });
+  app.post('/bookings', (req, res) => bookingController.createBooking);
 
   // Delete booking
-  app.delete('/bookings/:id', (req, res) => {
-    console.log(`deleting booking with id ${req.params.id}`);
-    db.deleteBooking(req.params.id).then(() => {
-      res.status(200).send('Success!');
-    }).catch((err) => {
-      console.log(err);
-    });
-  });
+  app.delete('/bookings/:id', (req, res) => bookingController.deleteBooking);
 
   // Update booking
-  app.put('/bookings/:id', (req, res) => {
-    console.log(`Updating booking with id ${req.params.id}`);
-    db.updateBooking(req.params.id, req.body)
-        .then(() => {
-          res.status(200).send('Success!');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  });
+  app.put('/bookings/:id', (req, res) => bookingController.updateBooking);
 };
 
 module.exports = appRouter;
