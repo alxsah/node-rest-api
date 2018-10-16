@@ -18,6 +18,19 @@ const appRouter = (app) => {
         });
   });
 
+  // Get a specific booking
+  app.get('/bookings/:id', (req, res) => {
+    console.log(`getting booking with id ${req.params.id}`);
+    db.getBooking(req.params.id)
+        .then((bookingsObj) => {
+          console.log(bookingsObj);
+          res.status(200).send(bookingsObj);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  });
+
   // Add booking
   app.post('/bookings', (req, res) => {
     console.log('posting booking');

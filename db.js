@@ -19,6 +19,19 @@ const getBookings = (booking) =>
         logError(err);
       });
 
+const getBooking = (bookingId) =>
+  MongoClient.connect(url)
+      .then((db) => {
+        const dbo = db.db(config.development.database);
+        logSuccess();
+        const mongoId = new mongo.ObjectId(bookingId);
+        const query = {_id: mongoId};
+        return dbo.collection(config.development.collection).findOne(query);
+      })
+      .catch((err) => {
+        logError(err);
+      });
+
 const postBooking = (booking) =>
   MongoClient.connect(url)
       .then((db) => {
@@ -36,8 +49,8 @@ const deleteBooking = (bookingId) =>
         const dbo = db.db(config.development.database);
         const mongoId = new mongo.ObjectId(bookingId);
         logSuccess();
-        const deleteQuery = {_id: mongoId};
-        return dbo.collection(config.development.collection).deleteOne(deleteQuery);
+        const query = {_id: mongoId};
+        return dbo.collection(config.development.collection).deleteOne(query);
       })
       .catch((err) => {
         logError(err);
@@ -49,11 +62,11 @@ const updateBooking = (bookingId, newBooking) =>
         const dbo = db.db(config.development.database);
         const mongoId = new mongo.ObjectId(bookingId);
         logSuccess();
-        const updateQuery = {_id: mongoId};
-        return dbo.collection(config.development.collection).replaceOne(updateQuery, newBooking);
+        const query = {_id: mongoId};
+        return dbo.collection(config.development.collection).replaceOne(query, newBooking);
       })
       .catch((err) => {
         logError(err);
       });
 
-module.exports = {getBookings, postBooking, deleteBooking, updateBooking};
+module.exports = {getBookings, getBooking, postBooking, deleteBooking, updateBooking};

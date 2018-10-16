@@ -1,6 +1,6 @@
 # API
 
-`GET /bookings/`
+`GET /bookings`
 
 Returns all bookings in the bookings collection
 
