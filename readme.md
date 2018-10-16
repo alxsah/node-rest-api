@@ -1,8 +1,8 @@
 # API
 
-`GET /bookings/:id`
+`GET /bookings/`
 
-Returns the booking with the associated ID
+Returns all bookings in the bookings collection
 
 `POST /bookings`
 
@@ -10,32 +10,13 @@ Create a new booking. Accepts the fields `name`, `address` and `datetime`.
 
 `DELETE /bookings/:id`
 
-Delete a booking with the associated ID
+Delete a booking with the associated booking ID
 
-`GET /users/:id/bookings`
+`UPDATE /users/:id`
 
-Returns all bookings for a particular user
+Update booking with the associated booking ID
 
 # DB implementation
-
-Two collections, `users` and `bookings`. 
-Example user document: 
-
-~~~json
-    {
-        "id": "00001111",
-        "username": "alex123",
-        "email": "alex123@gmail.com",
-        "bookings": [
-            {
-                "id": "65118982",
-                "name": "...",
-                "location": "...",
-            }
-        ]
-    }
-~~~
-
 
 Example booking document: 
 
