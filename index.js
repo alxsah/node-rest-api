@@ -14,6 +14,11 @@ const dbUrl = `mongodb://${config.development.mongo_hostname}:${config.developme
 mongoose.connect(dbUrl);
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
+
+db.once('open', () => {
+  app.emit('ready');
+});
+
 db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
 
 app.use((err, req, res, next) => {
@@ -27,6 +32,9 @@ app.use((err, req, res, next) => {
 
 routes(app);
 
-const server = app.listen(config.development.app_port, () => {
-  console.log('Service running on port ', server.address().port);
+app.on('ready', () => {
+  const server = app.listen(config.development.app_port, () => {
+    console.log('Service running on port ', server.address().port);
+  });
 });
+

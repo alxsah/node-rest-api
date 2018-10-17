@@ -9,16 +9,20 @@ const appRouter = (app) => {
   app.get('/bookings', bookingController.getAllBookings);
 
   // Get a specific booking
-  app.get('/bookings/:id', (req, res) => bookingController.getBooking);
+  app.get('/bookings/:id', bookingController.getBooking);
 
   // Add booking
-  app.post('/bookings', (req, res) => bookingController.createBooking);
+  app.post('/bookings', bookingController.createBooking);
 
   // Delete booking
-  app.delete('/bookings/:id', (req, res) => bookingController.deleteBooking);
+  app.delete('/bookings/:id', bookingController.deleteBooking);
 
   // Update booking
-  app.put('/bookings/:id', (req, res) => bookingController.updateBooking);
+  app.put('/bookings/:id', bookingController.updateBooking);
+
+  app.get('*', (req, res) => {
+    res.status(404).send('Endpoint not found.');
+  });
 };
 
 module.exports = appRouter;

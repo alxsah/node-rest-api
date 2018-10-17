@@ -38,10 +38,15 @@ const updateBooking = (req, res) => {
     name: req.body.name,
     date: req.body.date,
   });
-  Booking.findByIdAndUpdate(req.params.id, booking, (err) => {
+
+  Booking.findByIdAndUpdate(req.params.id, {
+    name: booking.name,
+    date: booking.date,
+  },
+  (err) => {
     if (err) return next(err);
   });
-  res.status(200).send('Deleted booking successfully.');
+  res.status(200).send('Updated booking successfully.');
 };
 
 module.exports = {getAllBookings, getBooking, createBooking, deleteBooking, updateBooking};
