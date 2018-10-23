@@ -1,12 +1,24 @@
 # API
 
+`POST /register`
+
+Register an account. Responds with auth token if successful.
+
+`POST /login`
+
+Log in with your username and password. Responds with auth token if successful.
+
 `GET /bookings`
 
-Returns all bookings in the bookings collection
+Returns all bookings created by the user
+
+`GET /bookings/:id`
+
+Returns a particular booking made by the user
 
 `POST /bookings`
 
-Create a new booking. Accepts the fields `name`, `address` and `datetime`.
+Create a new booking. Currently accepts the fields `name` and `date` (more will be added soon!)
 
 `DELETE /bookings/:id`
 
@@ -22,8 +34,8 @@ Example booking document:
 
 ~~~json
     {
-        "id": "65118982",
-        "name": "best pizza table for 2",
-        "address": "43 smith drive",
+        "_id": "5bcf9a8724aeed010fbe0469",
+        "name": "My Booking",
+        "date": "2018-02-04T00:00:00.000Z",
     }
 ~~~
