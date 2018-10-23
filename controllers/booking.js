@@ -1,20 +1,24 @@
 const Booking = require('../models/booking');
 
-const getAllBookings = (req, res) => {
+const getAllBookings = (req, res, next) => {
   Booking.find({}, (err, bookings) => {
     if (err) return next(err);
     res.status(200).send(bookings);
   });
 };
 
-const getBooking = (req, res) => {
+const getBooking = (req, res, next) => {
   Booking.findById(req.params.id, (err, booking) => {
     if (err) return next(err);
-    res.status(200).send(booking);
+    if (!booking) {
+      res.status(204).send('Booking not found');
+    } else {
+      res.status(200).send(booking);
+    }
   });
 };
 
-const createBooking = (req, res) => {
+const createBooking = (req, res, next) => {
   const booking = new Booking({
     name: req.body.name,
     date: req.body.date,
@@ -26,14 +30,14 @@ const createBooking = (req, res) => {
   res.status(201).send('Created booking successfully.');
 };
 
-const deleteBooking = (req, res) => {
+const deleteBooking = (req, res, next) => {
   Booking.findByIdAndRemove(req.params.id, (err) => {
     if (err) return next(err);
   });
   res.status(200).send('Deleted booking successfully.');
 };
 
-const updateBooking = (req, res) => {
+const updateBooking = (req, res, next) => {
   const booking = new Booking({
     name: req.body.name,
     date: req.body.date,

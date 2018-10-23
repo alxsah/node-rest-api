@@ -23,7 +23,6 @@ db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
 
 app.use((err, req, res, next) => {
   if (err) {
-    console.log('Invalid Request data');
     res.status(400).send('Invalid Request data');
   } else {
     next();
@@ -31,6 +30,10 @@ app.use((err, req, res, next) => {
 });
 
 routes(app);
+
+app.use((err, req, res, next) => {
+  if (err) res.status(500).send('Internal server error');
+});
 
 app.on('ready', () => {
   const server = app.listen(config.development.app_port, () => {
