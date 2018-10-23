@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const routes = require('./routes/routes.js');
-const config = require('./config.json');
+const passport = require('passport');
+const routes = require('./routes/routes');
+const config = require('./config');
+require('./config/passport');
 
 const app = express();
 
@@ -29,7 +31,15 @@ app.use((err, req, res, next) => {
   }
 });
 
+app.use(passport.initialize());
 routes(app);
+
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({message: `${err.name}:${err.message}`});
+  }
+});
 
 app.use((err, req, res, next) => {
   if (err) res.status(500).send('Internal server error');

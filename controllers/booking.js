@@ -1,56 +1,57 @@
 const Booking = require('../models/booking');
 
 const getAllBookings = (req, res, next) => {
-  Booking.find({}, (err, bookings) => {
-    if (err) return next(err);
-    res.status(200).send(bookings);
-  });
+  Booking.find({userId: req.payload._id})
+      .select('name date')
+      .exec()
+      .then((bookings) => res.status(200).json(bookings))
+      .catch((err) => next(err));
 };
 
 const getBooking = (req, res, next) => {
-  Booking.findById(req.params.id, (err, booking) => {
-    if (err) return next(err);
-    if (!booking) {
-      res.status(204).send('Booking not found');
-    } else {
-      res.status(200).send(booking);
-    }
-  });
+  Booking.findById(req.params.id)
+      .select('name date')
+      .exec()
+      .then((booking) => {
+        if (booking) {
+          res.status(200).json(booking);
+        } else {
+          res.status(res.status(204).send('Booking not found'));
+        }
+      })
+      .catch((err) => next(err));
 };
 
 const createBooking = (req, res, next) => {
   const booking = new Booking({
+    userId: req.payload._id,
     name: req.body.name,
     date: req.body.date,
   });
 
-  booking.save((err) => {
-    if (err) return next(err);
-  });
-  res.status(201).send('Created booking successfully.');
+  booking.save()
+      .then(() => res.status(201).send('Created booking successfully.'))
+      .catch((err) => {
+        console.log(err);
+        return next(err);
+      });
 };
 
 const deleteBooking = (req, res, next) => {
-  Booking.findByIdAndRemove(req.params.id, (err) => {
-    if (err) return next(err);
-  });
-  res.status(200).send('Deleted booking successfully.');
+  Booking.findByIdAndRemove(req.params.id)
+      .exec()
+      .then(() => res.status(200).send('Deleted booking successfully.'))
+      .catch((err) => next(err));
 };
 
 const updateBooking = (req, res, next) => {
-  const booking = new Booking({
+  Booking.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
     date: req.body.date,
-  });
-
-  Booking.findByIdAndUpdate(req.params.id, {
-    name: booking.name,
-    date: booking.date,
-  },
-  (err) => {
-    if (err) return next(err);
-  });
-  res.status(200).send('Updated booking successfully.');
+  })
+      .exec()
+      .then(() => res.status(200).send('Updated booking successfully.'))
+      .catch((err) => next(err));
 };
 
 module.exports = {getAllBookings, getBooking, createBooking, deleteBooking, updateBooking};

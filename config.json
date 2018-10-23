@@ -4,6 +4,7 @@
         "database": "mydb",
         "mongo_hostname": "mongo",
         "mongo_port": 27017,
-        "collection": "bookings"
+        "collection": "bookings",
+        "jwt_secret": "d93km1f8gb14bv98sj5lc"
     }
 }
