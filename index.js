@@ -29,6 +29,7 @@ app.use((err, req, res, next) => {
   }
 });
 
+app.use(passport.initialize());
 routes(app);
 
 app.use((err, req, res, next) => {

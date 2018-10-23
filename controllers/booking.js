@@ -1,10 +1,13 @@
 const Booking = require('../models/booking');
 
 const getAllBookings = (req, res, next) => {
-  Booking.find({}, (err, bookings) => {
-    if (err) return next(err);
-    res.status(200).send(bookings);
-  });
+  Booking
+      .find({requsername})
+      .select('name date')
+      .then((err, bookings) => {
+        if (err) return next(err);
+        res.status(200).send(bookings);
+      });
 };
 
 const getBooking = (req, res, next) => {
