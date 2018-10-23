@@ -23,12 +23,6 @@ db.once('open', () => {
 
 db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
 
-const jwt = require('express-jwt');
-const auth = jwt({
-  secret: config.jwt_secret,
-  userProperty: 'payload',
-});
-
 app.use((err, req, res, next) => {
   if (err) {
     res.status(400).send('Invalid Request data');
@@ -40,12 +34,12 @@ app.use((err, req, res, next) => {
 app.use(passport.initialize());
 routes(app);
 
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
     res.status(401);
     res.json({message: `${err.name}:${err.message}`});
   }
-}
+});
 
 app.use((err, req, res, next) => {
   if (err) res.status(500).send('Internal server error');
