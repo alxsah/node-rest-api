@@ -1,9 +1,15 @@
 const bookingController = require('../controllers/booking');
+const loginController = require('../controllers/login');
+const registerController = require('../controllers/register');
 
 const appRouter = (app) => {
   app.get('/', (req, res) => {
     res.status(200).send('rest API test');
   });
+
+  app.post('/login', loginController.login);
+
+  app.post('/register', registerController.register);
 
   // Get all bookings
   app.get('/bookings', bookingController.getAllBookings);
