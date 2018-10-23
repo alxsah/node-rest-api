@@ -1,9 +1,14 @@
 {
     "development": {
         "app_port": 3000,
-        "database": "mydb",
         "mongo_hostname": "mongo",
         "mongo_port": 27017,
-        "collection": "bookings"
+        "jwt_secret": "d93km1f8gb14bv98sj5lc"
+    },
+    "test": {
+        "app_port": 3001,
+        "mongo_hostname": "localhost",
+        "mongo_port": 27017,
+        "jwt_secret": "d93km1f8gb14bv98sj5lc"
     }
 }

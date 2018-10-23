@@ -7,5 +7,4 @@ while ! nc -z mongo 27017; do
 done
 
 echo "Mongo launched"
-node index.js
-
+NODE_ENV=development node index.js

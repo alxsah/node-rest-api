@@ -4,7 +4,8 @@
   "description": "Test node API",
   "main": "index.js",
   "scripts": {
-    "start": "./start.sh"
+    "start": "./start.sh",
+    "test": "node_modules/mocha/bin/mocha ./tests"
   },
   "author": "",
   "license": "ISC",
@@ -15,8 +16,11 @@
     "mongoose": "^5.3.4"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
     "eslint": "^5.7.0",
     "eslint-config-google": "^0.11.0",
-    "eslint-plugin-import": "^2.14.0"
+    "eslint-plugin-import": "^2.14.0",
+    "mocha": "^5.2.0"
   }
 }

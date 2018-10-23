@@ -1,4 +1,11 @@
 const bookingController = require('../controllers/booking');
+const loginController = require('../controllers/login');
+const registerController = require('../controllers/register');
+
+const auth = jwt({
+  secret: config[process.env.NODE_ENV].jwt_secret,
+  userProperty: 'payload',
+});
 
 const appRouter = (app) => {
   app.get('/', (req, res) => {
