@@ -1,10 +1,12 @@
 const Booking = require('../models/booking');
 
 const getAllBookings = (req, res, next) => {
-  Booking.find({}, (err, bookings) => {
-    if (err) return next(err);
-    res.status(200).send(bookings);
-  });
+  Booking
+      .find({username: req.body.username})
+      .select('name date')
+      .exec()
+      .then(() => res.status(200).send(bookings))
+      .catch(() => next(err));
 };
 
 const getBooking = (req, res, next) => {
@@ -20,6 +22,7 @@ const getBooking = (req, res, next) => {
 
 const createBooking = (req, res, next) => {
   const booking = new Booking({
+    username: req.body.username,
     name: req.body.name,
     date: req.body.date,
   });
@@ -38,14 +41,10 @@ const deleteBooking = (req, res, next) => {
 };
 
 const updateBooking = (req, res, next) => {
-  const booking = new Booking({
+  Booking.findByIdAndUpdate(req.params.id, {
+    username: req.body.username,
     name: req.body.name,
     date: req.body.date,
-  });
-
-  Booking.findByIdAndUpdate(req.params.id, {
-    name: booking.name,
-    date: booking.date,
   },
   (err) => {
     if (err) return next(err);

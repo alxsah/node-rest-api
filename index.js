@@ -4,38 +4,12 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const routes = require('./routes/routes');
 const config = require('./config');
-const LocalStrategy = require('passport-local').Strategy;
-const User = require('./models/user');
+require('./config/passport');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-// Passport config
-passport.use(new LocalStrategy({
-  usernameField: 'username',
-},
-(username, password, done) => {
-  User.findOne({username}, (err, user) => {
-    if (err) return done(err);
-    // Return if user not found in database
-    if (!user) {
-      return done(null, false, {
-        message: 'User not found',
-      });
-    }
-    // Return if password is wrong
-    if (!user.validPassword(password)) {
-      return done(null, false, {
-        message: 'Incorrect password',
-      });
-    }
-    // If credentials are correct, return the user object
-    return done(null, user);
-  });
-}
-));
 
 // Set up database connection
 const dbUrl = `mongodb://${config.development.mongo_hostname}:${config.development.mongo_port}/`;
@@ -49,6 +23,12 @@ db.once('open', () => {
 
 db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
 
+const jwt = require('express-jwt');
+const auth = jwt({
+  secret: config.jwt_secret,
+  userProperty: 'payload',
+});
+
 app.use((err, req, res, next) => {
   if (err) {
     res.status(400).send('Invalid Request data');
@@ -59,6 +39,13 @@ app.use((err, req, res, next) => {
 
 app.use(passport.initialize());
 routes(app);
+
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({message: `${err.name}:${err.message}`});
+  }
+}
 
 app.use((err, req, res, next) => {
   if (err) res.status(500).send('Internal server error');
