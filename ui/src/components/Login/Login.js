@@ -44,7 +44,7 @@ class Login extends Component {
     render() {
       return (
         <div className="login-container">
-          <div className="field-container">
+          <form className="field-container" onSubmit={this.handleClick}>
             <TextField 
               className="field username-field"
               value={this.state.usernameFieldValue}
@@ -62,14 +62,14 @@ class Login extends Component {
             />
             <div className="submit-container">
               <Button
+                type="submit"
                 className="submit-button"
                 variant="contained" 
-                color="primary"
-                onClick={this.handleClick}>
+                color="primary">
                   Log In
               </Button>
             </div>
-          </div>
+          </form>
           <p className="register-link" onClick={this.handleRegister}>Don't have an account? Register one here.</p>
           <p className="failure-message">{this.state.loginFailed ? 'Invalid username or password.' : ''}</p>
         </div>

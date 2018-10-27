@@ -9,14 +9,17 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddBookingDialog from '../AddBookingDialog/AddBookingDialog';
 
 class MaterialTable extends Component {
     state = {
       rows: [],
       selected: '',
       hideDelete: true,
-      userToken: localStorage.getItem('loginToken')
+      userToken: localStorage.getItem('loginToken'),
+      isDialogOpen: false,
     };
     componentDidMount = () => {
       this.getUserBookings();
@@ -29,7 +32,6 @@ class MaterialTable extends Component {
         }
       })
       .then((res) => {
-        console.log(res);
         this.setState({rows: res.data});
       });
     }
@@ -40,15 +42,6 @@ class MaterialTable extends Component {
       } else {
         this.setState({selected: id});
       }
-      /* let { selected } = this.state;
-      const selectedIndex = selected.indexOf(id);
-      if (selectedIndex === -1) {
-        selected.push(id);
-      } else {
-        selected = selected.filter(x => x !== id);
-      }
-      this.setState({selected: selected}); */
-      console.log('selected:', this.state.selected);
     };
 
     handleDeleteClick = () => {
@@ -58,9 +51,20 @@ class MaterialTable extends Component {
           'Authorization': `Bearer ${this.state.userToken}`
         }
       }).then(res => {
-        console.log(res);
         this.getUserBookings();
       });
+    }
+
+    handleAddClick = () => {
+      this.setState({isDialogOpen: true});
+    }
+
+    setDialogState = (state) => {
+      this.setState({isDialogOpen: state});
+    }
+
+    handleAddCompletion = () => {
+      this.getUserBookings();
     }
 
     hideDelete = () => this.state.selected.length === 0;
@@ -70,6 +74,12 @@ class MaterialTable extends Component {
     render() {
       return (
       <Paper className="paper">
+        <AddBookingDialog 
+          open={this.state.isDialogOpen} 
+          setDialogState={this.setDialogState}
+          userToken={this.state.userToken}
+          handleAddCompletion={this.handleAddCompletion}
+        />
         <Table>
           <TableHead>
             <TableRow>
@@ -84,6 +94,13 @@ class MaterialTable extends Component {
                 aria-label="Delete">
                 <DeleteIcon 
                   onClick={this.handleDeleteClick}
+                />
+              </IconButton>
+              <IconButton 
+                className="add-icon"
+                aria-label="Add">
+                <AddIcon 
+                  onClick={this.handleAddClick}
                 />
               </IconButton>
             </TableCell>
