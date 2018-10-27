@@ -1,19 +1,33 @@
+const moment = require('moment');
 const Booking = require('../models/booking');
+
+const formatBookings = (bookings) => {
+  for (const booking of bookings) {
+    booking.date = moment(booking.date).format('DD/MM/YYYY');
+  };
+  return bookings;
+};
 
 const getAllBookings = (req, res, next) => {
   Booking.find({userId: req.payload._id})
       .select('name date')
+      .lean()
       .exec()
-      .then((bookings) => res.status(200).json(bookings))
+      .then((bookings) => {
+        bookings = formatBookings(bookings);
+        return res.status(200).json(bookings);
+      })
       .catch((err) => next(err));
 };
 
 const getBooking = (req, res, next) => {
   Booking.findById(req.params.id)
       .select('name date')
+      .lean()
       .exec()
       .then((booking) => {
         if (booking) {
+          booking.date = moment(booking.date).format('DD/MM/YYYY');
           res.status(200).json(booking);
         } else {
           res.status(res.status(204).send('Booking not found'));

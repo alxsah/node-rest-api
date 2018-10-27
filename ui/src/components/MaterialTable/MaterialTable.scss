@@ -1,0 +1,9 @@
+.paper {
+    margin: 32px 8px;
+    button {
+        &.hidden {
+            visibility: hidden;
+        }
+    }
+}
+
