@@ -1,6 +1,6 @@
 {
     "development": {
-        "app_port": 3000,
+        "app_port": 3001,
         "database": "mydb",
         "mongo_hostname": "mongo",
         "mongo_port": 27017,
