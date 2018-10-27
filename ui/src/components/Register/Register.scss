@@ -1,0 +1,33 @@
+.register-container {
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .field-container {
+      .field {
+        &.username-field {
+          margin: 16px 8px;
+        }
+        &.password-field {
+          margin: 16px 8px;
+        }
+      }
+      .submit-container {
+        display: block;
+        .submit-button {
+          margin: 16px 0;
+        }
+      }
+    }
+    .success-message {
+        color: green;
+    }
+    .back-link {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .hidden {
+        display: none;
+    }
+  }

@@ -3,14 +3,16 @@ const Booking = require('../models/booking');
 
 const formatBookings = (bookings) => {
   for (const booking of bookings) {
-    booking.date = moment(booking.date).format('DD/MM/YYYY');
+    booking.date = moment(booking.datetime).format('DD/MM/YYYY');
+    booking.time = moment(booking.datetime).format('HH:mm');
+    delete booking.datetime;
   };
   return bookings;
 };
 
 const getAllBookings = (req, res, next) => {
   Booking.find({userId: req.payload._id})
-      .select('name date')
+      .select('name datetime location')
       .lean()
       .exec()
       .then((bookings) => {
@@ -22,12 +24,14 @@ const getAllBookings = (req, res, next) => {
 
 const getBooking = (req, res, next) => {
   Booking.findById(req.params.id)
-      .select('name date')
+      .select('name datetime location')
       .lean()
       .exec()
       .then((booking) => {
         if (booking) {
-          booking.date = moment(booking.date).format('DD/MM/YYYY');
+          booking.date = moment(booking.datetime).format('DD/MM/YYYY');
+          booking.time = moment(booking.datetime).format('HH:mm');
+          delete booking.datetime;
           res.status(200).json(booking);
         } else {
           res.status(res.status(204).send('Booking not found'));
@@ -40,7 +44,8 @@ const createBooking = (req, res, next) => {
   const booking = new Booking({
     userId: req.payload._id,
     name: req.body.name,
-    date: req.body.date,
+    datetime: req.body.datetime,
+    location: req.body.location,
   });
 
   booking.save()

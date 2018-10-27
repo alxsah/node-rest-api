@@ -29,12 +29,16 @@ class Login extends Component {
       }
     }).then((res) => {
       console.log(res, this.props.handleLogin);
-      this.props.handleLogin(true);
       localStorage.setItem('loginToken', res.data.token);
+      this.props.handleLogin(true);
 
     }).catch((err) => {
       this.setState({loginFailed: true});
     });
+  }
+
+  handleRegister = () => {
+    this.props.handleRegister(true);
   }
 
     render() {
@@ -66,6 +70,7 @@ class Login extends Component {
               </Button>
             </div>
           </div>
+          <p className="register-link" onClick={this.handleRegister}>Don't have an account? Register one here.</p>
           <p className="failure-message">{this.state.loginFailed ? 'Invalid username or password.' : ''}</p>
         </div>
       );

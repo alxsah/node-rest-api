@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const BookingSchema = new Schema({
   userId: {type: String, required: true},
   name: {type: String, required: true, max: 50},
-  date: {type: Date, required: true},
+  datetime: {type: Date, required: true},
+  location: {type: String, required: true, max: 100},
+
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);

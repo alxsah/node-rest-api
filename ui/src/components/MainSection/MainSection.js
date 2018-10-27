@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import MaterialTable from '../MaterialTable/MaterialTable';
 import Login from '../Login/Login';
+import Register from '../Register/Register';
 
 class MainSection extends Component {
     state = {
-      isLoggedIn: false,
-    };
-
+      register: false
+    }
     componentDidMount = () => {
       if (localStorage.getItem('loginToken')) {
         this.setState({isLoggedIn: true});
@@ -14,14 +14,24 @@ class MainSection extends Component {
     }
 
     setLoggedInState = (isLoggedIn) => {
-      this.setState({isLoggedIn: isLoggedIn});
+      this.props.handleLogin(isLoggedIn);
+    };
+
+    setRegisterState = (flag) => {
+      this.setState({register: flag});
     };
 
     render() {
-        if (this.state.isLoggedIn) {
+        if (this.props.isLoggedIn && !this.state.register) {
             return <MaterialTable />
+        } else if (!this.state.register){
+            return <Login 
+              isLoggedIn={this.props.isLoggedIn} 
+              handleLogin={this.setLoggedInState}
+              handleRegister={this.setRegisterState}
+            />
         } else {
-            return <Login isLoggedIn={this.state.isLoggedIn} handleLogin={this.setLoggedInState}/>
+          return <Register handleBack={this.setRegisterState}/>
         }
 
     }
