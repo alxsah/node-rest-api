@@ -10,7 +10,6 @@ class Register extends Component {
     password: '',
     usernamePlaceholder: 'Enter a username',
     passwordPlaceholder: 'Enter a password',
-    registered: false,
     failed: false
   };
 
@@ -29,7 +28,6 @@ class Register extends Component {
         'Content-Type': 'application/json'
       }
     }).then((res) => {
-      console.log(res);
       this.setState({registered: true, failed: false});
     }).catch((err) => {
       this.setState({registered: true, failed: true});
@@ -37,7 +35,7 @@ class Register extends Component {
   }
 
   handleBack = () => {
-    this.props.handleBack(false);
+    this.props.setRegistering(false);
   }
 
   render() {

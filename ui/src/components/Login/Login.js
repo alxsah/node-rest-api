@@ -6,39 +6,42 @@ import Button from '@material-ui/core/Button';
 
 class Login extends Component {
   state = {
-    username: '',
-    password: '',
     usernamePlaceholder: 'Username',
     passwordPlaceholder: 'Password',
     loginFailed: false
   };
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  };
+  handleUsernameChange = () => event => {
+    this.props.setUsername(event.target.value);
+  }
 
-  handleClick = () => {
+  handlePasswordChange = () => event => {
+    this.props.setPassword(event.target.value);
+  }
+
+  handleClick = (event) => {
+    event.preventDefault();
+    console.log('props', this.props.username, this.props.password);
     axios.post('http://localhost:3001/login', {
-      username: this.state.username,
-      password: this.state.password
+      username: this.props.username,
+      password: this.props.password
     }, {
       headers: {
         'Content-Type': 'application/json'
       }
     }).then((res) => {
-      console.log(res, this.props.handleLogin);
+      console.log('success', res);
       localStorage.setItem('loginToken', res.data.token);
-      this.props.handleLogin(true);
+      this.props.setLoggedIn(true);
 
     }).catch((err) => {
+      console.log('err', err);
       this.setState({loginFailed: true});
     });
   }
 
   handleRegister = () => {
-    this.props.handleRegister(true);
+    this.props.setRegistering(true);
   }
 
     render() {
@@ -47,17 +50,15 @@ class Login extends Component {
           <form className="field-container" onSubmit={this.handleClick}>
             <TextField 
               className="field username-field"
-              value={this.state.usernameFieldValue}
               placeholder={this.state.usernamePlaceholder}
-              onChange={this.handleChange('username')}
+              onChange={this.handleUsernameChange()}
               margin="normal"
             />
             <TextField 
               className="field password-field"
               type="password"
-              value={this.state.passwordFieldValue}
               placeholder={this.state.passwordPlaceholder}
-              onChange={this.handleChange('password')}
+              onChange={this.handlePasswordChange()}
               margin="normal"
             />
             <div className="submit-container">

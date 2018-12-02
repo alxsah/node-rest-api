@@ -6,7 +6,6 @@ const BookingSchema = new Schema({
   name: {type: String, required: true, max: 50},
   datetime: {type: Date, required: true},
   location: {type: String, required: true, max: 100},
-
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);
