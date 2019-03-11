@@ -8,6 +8,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import config from '../../config.json';
+
+const bookingsEndpoint = `http://${config[process.env.NODE_ENV].hostname}:${config[process.env.NODE_ENV].port}/bookings`;
+
 
 class AddBookingDialog extends Component {
 
@@ -35,7 +39,7 @@ class AddBookingDialog extends Component {
     if (!this.state.name || !this.state.datetime || !this.state.location) {
       this.setState({missingFields: true});
     } else {
-      axios.post('http://localhost:3001/bookings', {
+      axios.post(bookingsEndpoint, {
         name: this.state.name,
         location: this.state.location,
         datetime: this.state.datetime,

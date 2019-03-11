@@ -3,6 +3,9 @@ import './Login.scss';
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import config from '../../config.json';
+
+const endpoint = `http://${config[process.env.NODE_ENV].hostname}:${config[process.env.NODE_ENV].port}/login`;
 
 class Login extends Component {
   state = {
@@ -21,8 +24,7 @@ class Login extends Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    console.log('props', this.props.username, this.props.password);
-    axios.post('http://localhost:3001/login', {
+    axios.post(endpoint, {
       username: this.props.username,
       password: this.props.password
     }, {
@@ -30,12 +32,10 @@ class Login extends Component {
         'Content-Type': 'application/json'
       }
     }).then((res) => {
-      console.log('success', res);
       localStorage.setItem('loginToken', res.data.token);
       this.props.setLoggedIn(true);
 
     }).catch((err) => {
-      console.log('err', err);
       this.setState({loginFailed: true});
     });
   }

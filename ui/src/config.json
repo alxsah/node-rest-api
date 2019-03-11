@@ -1,0 +1,10 @@
+{
+    "development": {
+        "hostname": "localhost",
+        "port": 3001
+    },
+    "production": {
+        "hostname": "172.31.42.33",
+        "port": 3001
+    }
+}

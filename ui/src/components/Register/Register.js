@@ -3,6 +3,9 @@ import './Register.scss';
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import config from '../../config';
+
+const endpoint = `http://${config[process.env.NODE_ENV].hostname}:${config[process.env.NODE_ENV].port}/register`;
 
 class Register extends Component {
   state = {
@@ -20,7 +23,7 @@ class Register extends Component {
   };
 
   handleSubmit = () => {
-    axios.post('http://localhost:3001/register', {
+    axios.post(endpoint, {
       username: this.state.username,
       password: this.state.password
     }, {

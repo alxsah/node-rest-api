@@ -12,6 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddBookingDialog from '../AddBookingDialog/AddBookingDialog';
+import config from '../../config.json';
+
+const bookingsEndpoint = `http://${config[process.env.NODE_ENV].hostname}:${config[process.env.NODE_ENV].port}/bookings`;
 
 class MaterialTable extends Component {
     state = {
@@ -25,7 +28,7 @@ class MaterialTable extends Component {
       this.getUserBookings();
     }
     getUserBookings = () => {
-      axios.get('http://localhost:3001/bookings', {
+      axios.get(bookingsEndpoint, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.state.userToken}`
@@ -45,7 +48,7 @@ class MaterialTable extends Component {
     };
 
     handleDeleteClick = () => {
-      axios.delete(`http://localhost:3001/bookings/${this.state.selected}`, {
+      axios.delete(`${bookingsEndpoint}/${this.state.selected}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.state.userToken}`
