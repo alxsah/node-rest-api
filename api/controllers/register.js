@@ -1,6 +1,10 @@
 const User = require('../models/user');
 
 const register = (req, res) => {
+  if (!req.body.username || !req.body.password) {
+    console.log('missing fields');
+    res.status(500).json({error: 'Missing required fields'});
+  }
   User.find({username: req.body.username})
       .exec()
       .then((existing) => {
