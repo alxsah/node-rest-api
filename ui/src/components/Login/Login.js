@@ -1,11 +1,43 @@
 import React, { Component } from 'react';
-import './Login.scss';
-import axios from 'axios'
+import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import config from '../../config.json';
 
 const endpoint = `http://${config[process.env.NODE_ENV].hostname}:${config[process.env.NODE_ENV].port}/login`;
+
+const styles = () => ({
+  loginContainer: {
+    height: '75vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  usernameField: {
+    margin: '16px 8px'
+  },
+  passwordField: {
+    margin: '16px 8px'
+  },
+  submitContainer: {
+    display: 'block'
+  },
+  submitButton: {
+    margin: '16px 0'
+  },
+  failureMessage: {
+    color: 'red'
+  },
+  registerLink: {
+    marginTop: '16px',
+    fontSize: '14px',
+    color: 'black',
+    cursor: 'pointer',
+    textDecoration: 'underline'
+  }
+});
 
 class Login extends Component {
   state = {
@@ -31,11 +63,13 @@ class Login extends Component {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then((res) => {
+    }).then(res => {
+      console.log('success');
       localStorage.setItem('loginToken', res.data.token);
       this.props.setLoggedIn(true);
 
-    }).catch((err) => {
+    }).catch(err => {
+      console.log('err', err);
       this.setState({loginFailed: true});
     });
   }
@@ -46,37 +80,37 @@ class Login extends Component {
 
     render() {
       return (
-        <div className="login-container">
-          <form className="field-container" onSubmit={this.handleClick}>
+        <div className={this.props.classes.loginContainer}>
+          <form className={this.props.classes.fieldContainer} onSubmit={this.handleClick}>
             <TextField 
-              className="field username-field"
+              className={this.props.classes.usernameField}
               placeholder={this.state.usernamePlaceholder}
               onChange={this.handleUsernameChange()}
               margin="normal"
             />
             <TextField 
-              className="field password-field"
+              className={this.props.classes.passwordField}
               type="password"
               placeholder={this.state.passwordPlaceholder}
               onChange={this.handlePasswordChange()}
               margin="normal"
             />
-            <div className="submit-container">
+            <div className={this.props.classes.submitContainer}>
               <Button
                 type="submit"
-                className="submit-button"
+                className={this.props.classes.submitButton}
                 variant="contained" 
                 color="primary">
                   Log In
               </Button>
             </div>
           </form>
-          <p className="register-link" onClick={this.handleRegister}>Don't have an account? Register one here.</p>
-          <p className="failure-message">{this.state.loginFailed ? 'Invalid username or password.' : ''}</p>
+          <p className={this.props.classes.registerLink} onClick={this.handleRegister}>Don't have an account? Register one here.</p>
+          <p className={this.props.classes.failureMessage}>{this.state.loginFailed ? 'Invalid username or password.' : ''}</p>
         </div>
       );
     }
   }
-  
-  export default Login;
+  const LoginStyled = withStyles(styles)(Login)
+  export default LoginStyled;
   

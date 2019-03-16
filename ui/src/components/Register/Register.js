@@ -1,11 +1,47 @@
 import React, { Component } from 'react';
-import './Register.scss';
+import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import config from '../../config';
 
 const endpoint = `http://${config[process.env.NODE_ENV].hostname}:${config[process.env.NODE_ENV].port}/register`;
+
+const styles = theme => ({
+  registerContainer: {
+    height: '75vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  usernameField: {
+    margin: '16px 8px'
+  },
+  passwordField: {
+    margin: '16px 8px'
+  },
+  submitContainer: {
+    display: 'block'
+  },
+  submitButton: {
+    margin: '16px 0'
+  },
+  successMessage: {
+    color: 'green'
+  },
+  failureMessage: {
+    color: 'red'
+  },
+  backLink: {
+    cursor: 'pointer',
+    textDecoration: 'underline'
+  },
+  hidden: {
+    display: 'none'
+  }
+
+});
 
 class Register extends Component {
   state = {
@@ -43,26 +79,26 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="register-container">
-        <div className="field-container">
+      <div className={this.props.classes.registerContainer}>
+        <div className={this.props.classes.fieldContainer}>
           <TextField 
-            className="field username-field"
+            className={this.props.classes.usernameField}
             value={this.state.usernameFieldValue}
             placeholder={this.state.usernamePlaceholder}
             onChange={this.handleChange('username')}
             margin="normal"
           />
           <TextField 
-            className="field password-field"
+            className={this.props.classes.passwordField}
             type="password"
             value={this.state.passwordFieldValue}
             placeholder={this.state.passwordPlaceholder}
             onChange={this.handleChange('password')}
             margin="normal"
           />
-          <div className="submit-container">
+          <div className={this.props.classes.submitContainer}>
             <Button
-              className="submit-button"
+              className={this.props.classes.submitButton}
               variant="contained" 
               color="primary"
               onClick={this.handleSubmit}>
@@ -70,12 +106,13 @@ class Register extends Component {
             </Button>
           </div>
         </div>
-        <p className={this.state.registered && !this.state.failed ? 'success-message' : 'hidden'}>Registration successful.</p>
-        <p className={this.state.registered && this.state.failed ? 'failure-message' : 'hidden'}>Sorry, registration failed.</p>
-        <p className="back-link" onClick={this.handleBack}>Back to Login</p>
+        <p className={this.state.registered && !this.state.failed ? this.props.classes.successMessage : this.props.classes.hidden}>Registration successful.</p>
+        <p className={this.state.registered && this.state.failed ? this.props.classes.failureMessage : this.props.classes.hidden}>Sorry, registration failed.</p>
+        <p className={this.props.classes.backLink} onClick={this.handleBack}>Back to Login</p>
       </div>
     )
   }    
 }
 
-export default Register;
+const RegisterStyled = withStyles(styles)(Register);
+export default RegisterStyled;
