@@ -3,6 +3,10 @@
         "hostname": "localhost",
         "port": 3002
     },
+    "test": {
+        "hostname": "localhost",
+        "port": 3002
+    },
     "production": {
         "hostname": "18.220.169.123",
         "port": 3001

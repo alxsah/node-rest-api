@@ -64,7 +64,6 @@ class BookingDialog extends Component {
     || this.locationInput.current.value === '';
 
   handleSubmit = () => {
-    console.log('handleSubmit')
     if (!this.areFieldsMissing()) {
       this.props.setDialogState(this.props.dialogType, false);
       this.props.handleCompletion({

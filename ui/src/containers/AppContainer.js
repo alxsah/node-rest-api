@@ -4,7 +4,7 @@ import { setLoggedIn } from '../actions'
 
 const mapStateToProps = state => {
   return {
-  isLoggedIn: state.login.isLoggedIn
+    isLoggedIn: state.login.isLoggedIn
   }
 };
 

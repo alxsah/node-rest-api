@@ -51,7 +51,6 @@ const createBooking = (req, res, next) => {
   booking.save()
       .then(() => res.status(201).send('Created booking successfully.'))
       .catch((err) => {
-        console.log(err);
         return next(err);
       });
 };
