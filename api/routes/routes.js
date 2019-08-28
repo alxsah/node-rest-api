@@ -1,4 +1,5 @@
 const jwt = require('express-jwt');
+
 const config = require('../config');
 const bookingController = require('../controllers/booking');
 const loginController = require('../controllers/login');
@@ -7,6 +8,7 @@ const registerController = require('../controllers/register');
 const auth = jwt({
   secret: config.development.jwt_secret,
   userProperty: 'payload',
+  getToken: (req) => req.cookies.jwt,
 });
 
 const appRouter = (app) => {

@@ -34,13 +34,13 @@ class App extends Component {
     headerText: 'Simple Booking Tool',
   };
   componentDidMount = () => {
-    if (localStorage.getItem('loginToken')) {
+    if (localStorage.getItem('loggedInFlag')) {
       this.props.setLoggedIn(true);
     }
   }
 
   handleLogout = () => {
-    localStorage.removeItem('loginToken');
+    localStorage.removeItem('loggedInFlag');
     this.props.setLoggedIn(false);
   }
 

@@ -60,16 +60,15 @@ class Login extends Component {
       username: this.props.username,
       password: this.props.password
     }, {
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(res => {
-      console.log('success');
-      localStorage.setItem('loginToken', res.data.token);
+    }).then(() => {
+      localStorage.setItem('loggedInFlag', true);
       this.props.setLoggedIn(true);
 
-    }).catch(err => {
-      console.log('err', err);
+    }).catch(() => {
       this.setState({loginFailed: true});
     });
   }

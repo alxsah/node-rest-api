@@ -52,7 +52,6 @@ class MaterialTable extends Component {
     hideDelete: true,
     isAddDialogOpen: false,
     isEditDialogOpen: false,
-    userToken: localStorage.getItem('loginToken'),
   };
 
   static propTypes = {
@@ -65,9 +64,9 @@ class MaterialTable extends Component {
 
   getUserBookings = () => {
     axios.get(bookingsEndpoint, {
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.state.userToken}`
       }
     })
     .then(res => {
@@ -85,11 +84,13 @@ class MaterialTable extends Component {
 
   handleDeleteClick = () => {
       axios.delete(`${bookingsEndpoint}/${this.state.selected}`, {
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.state.userToken}`
         }
-      }).then(res => {
+      }).then(() => {
+        // Ensure no row is selected after deletion
+        this.setState({selected: ''});
         this.getUserBookings();
       });
     }
@@ -101,17 +102,17 @@ class MaterialTable extends Component {
     handleAddCompletion = booking => {
       axios.post(bookingsEndpoint, booking,
       {
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.state.userToken}`
         }
       })
-      .then(res => {
+      .then(() => {
         this.setDialogState('Add', false);
-      }).catch(err => {
+        this.getUserBookings();
+      }).catch(() => {
         this.setState({error: true});
       });
-      this.getUserBookings();
     }
 
   isNothingSelected = () => this.state.selected.length === 0;
@@ -122,16 +123,16 @@ class MaterialTable extends Component {
 
   handleEditCompletion = booking => {
     axios.put(`${bookingsEndpoint}/${this.state.selected}`, booking, {
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.state.userToken}`
       }
-    }).then(res => {
+    }).then(() => {
       this.setDialogState('Edit', false);
-    }).catch(err => {
+      this.getUserBookings();
+    }).catch(() => {
       this.setState({error: true});
     });
-    this.getUserBookings();
   }
 
   renderDialogs = () => (
@@ -159,23 +160,23 @@ class MaterialTable extends Component {
       <TableCell>Date</TableCell>
       <TableCell className="icon-cell">
         <div className={this.props.classes.iconContainer}>
-          <IconButton 
+          <IconButton
+            onClick={() => this.setDialogState('Add', true)}
             className={this.props.classes.addIcon}
             aria-label="Add">
-            <AddIcon 
-              onClick={() => this.setDialogState('Add', true)}/>
+            <AddIcon />
           </IconButton>
-          <IconButton 
+          <IconButton
+            onClick={() => this.setDialogState('Edit', true)}
             className={`${this.props.classes.editIcon} ${this.isNothingSelected() ? this.props.classes.hidden: ''}`}
             aria-label="Edit">
-            <EditIcon 
-              onClick={() => this.setDialogState('Edit', true)}/>
+            <EditIcon />
           </IconButton>
-          <IconButton 
+          <IconButton
+            onClick={this.handleDeleteClick}
             className={`${this.props.classes.deleteIcon} ${this.isNothingSelected() ? this.props.classes.hidden : ''}`} 
             aria-label="Delete">
-            <DeleteIcon 
-              onClick={this.handleDeleteClick}/>
+            <DeleteIcon />
           </IconButton>
         </div>
       </TableCell>
