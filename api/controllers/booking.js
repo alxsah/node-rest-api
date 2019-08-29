@@ -34,7 +34,7 @@ const getBooking = (req, res, next) => {
           delete booking.datetime;
           res.status(200).json(booking);
         } else {
-          res.status(res.status(204).send('Booking not found'));
+          res.status(res.status(204).json({error: 'Booking not found'}));
         }
       })
       .catch((err) => next(err));

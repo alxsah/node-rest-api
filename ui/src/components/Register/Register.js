@@ -7,7 +7,7 @@ import config from '../../config';
 
 const endpoint = `http://${config[process.env.NODE_ENV].hostname}:${config[process.env.NODE_ENV].port}/register`;
 
-const styles = theme => ({
+const styles = () => ({
   registerContainer: {
     height: '75vh',
     display: 'flex',
@@ -44,12 +44,18 @@ const styles = theme => ({
 });
 
 class Register extends Component {
+
+  REGISTRATION_SUCCESSFUL = 'Registration successful.';
+  USERNAME_EXISTS = 'A user already exists with that name.';
+  REGISTRATION_FAILED = 'Sorry, registration failed.';
+  BACK_TO_LOGIN = 'Back to Login';
+
   state = {
     username: '',
     password: '',
     usernamePlaceholder: 'Enter a username',
     passwordPlaceholder: 'Enter a password',
-    failed: false
+    responseCode: 0,
   };
 
   handleChange = name => event => {
@@ -66,10 +72,10 @@ class Register extends Component {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then((res) => {
-      this.setState({registered: true, failed: false});
-    }).catch((err) => {
-      this.setState({registered: true, failed: true});
+    }).then(res => {
+      this.setState({registered: true, responseCode: res.status});
+    }).catch(err => {
+      this.setState({registered: true, responseCode: err.response.status});
     });
   }
 
@@ -77,6 +83,14 @@ class Register extends Component {
     this.props.setRegistering(false);
   }
 
+  getSuccessMessageClass = () =>
+    this.state.registered && this.state.responseCode === 200 
+      ? this.props.classes.successMessage : this.props.classes.hidden;
+  
+  getFailureMessageClass = () =>
+  this.state.registered && this.state.responseCode !== 200 
+    ? this.props.classes.failureMessage : this.props.classes.hidden;
+  
   render() {
     return (
       <div className={this.props.classes.registerContainer}>
@@ -106,9 +120,13 @@ class Register extends Component {
             </Button>
           </div>
         </div>
-        <p className={this.state.registered && !this.state.failed ? this.props.classes.successMessage : this.props.classes.hidden}>Registration successful.</p>
-        <p className={this.state.registered && this.state.failed ? this.props.classes.failureMessage : this.props.classes.hidden}>Sorry, registration failed.</p>
-        <p className={this.props.classes.backLink} onClick={this.handleBack}>Back to Login</p>
+        <p className={this.getSuccessMessageClass()}>{this.REGISTRATION_SUCCESSFUL}</p>
+        <p className={this.getFailureMessageClass()}>
+          {
+            this.state.responseCode === 409 ? this.USERNAME_EXISTS : this.REGISTRATION_FAILED
+          }
+        </p>
+        <p className={this.props.classes.backLink} onClick={this.handleBack}>{this.BACK_TO_LOGIN}</p>
       </div>
     )
   }    

@@ -25,6 +25,12 @@ const styles = theme => ({
 });
 
 class BookingDialog extends Component {
+
+  FILL_OUT_ALL_FIELDS = 'Please fill out all the fields.';
+  DIALOG_TITLE = `${this.props.dialogType} a Booking`;
+  BOOKING_NAME = 'Booking Name (Max 50 chars)';
+  LOCATION = 'Location (Max 200 chars)';
+
   state = {
     showMissingFieldsError: false,
     error: false
@@ -84,7 +90,7 @@ class BookingDialog extends Component {
       style={{marginBottom: '24px'}}
       margin="normal"
       id="name"
-      label="Booking Name (Max 50 chars)"
+      label={this.BOOKING_NAME}
       type="text"
       defaultValue={this.props.selectedBooking.name}
       inputRef={this.nameInput}
@@ -100,7 +106,7 @@ class BookingDialog extends Component {
       rows="4"
       margin="dense"
       id="location"
-      label="Location (Max 200 chars)"
+      label={this.LOCATION}
       type="text"
       defaultValue={this.props.selectedBooking.location}
       inputRef={this.locationInput}
@@ -113,7 +119,7 @@ class BookingDialog extends Component {
       {this.renderNameTextField()}
       {this.renderLocationTextField()}
       <p className={this.state.showMissingFieldsError ? this.props.classes.errorMessage : this.props.classes.hidden}>
-        Please fill out all the fields.
+        {this.FILL_OUT_ALL_FIELDS}
       </p>
     </DialogContent>
   );
@@ -136,7 +142,7 @@ class BookingDialog extends Component {
       onClose={this.handleClose}
       onEnter={this.handleEnter}
       aria-labelledby="form-dialog-title">
-      <DialogTitle className={this.props.classes.dialogTitle} id="form-dialog-title">{this.props.dialogType} a Booking</DialogTitle>
+      <DialogTitle className={this.props.classes.dialogTitle} id="form-dialog-title">{this.DIALOG_TITLE}</DialogTitle>
       {this.renderDialogContent()}
       {this.renderDialogActions()}
     </Dialog>

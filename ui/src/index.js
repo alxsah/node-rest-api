@@ -7,6 +7,9 @@ import './index.scss';
 import AppContainer from './containers/AppContainer';
 import * as serviceWorker from './serviceWorker';
 
+// Use Material UI Typography V2
+window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+
 const store = createStore(rootReducer)
 
 ReactDOM.render(

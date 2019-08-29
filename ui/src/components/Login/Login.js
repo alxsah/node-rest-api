@@ -40,6 +40,10 @@ const styles = () => ({
 });
 
 class Login extends Component {
+
+  NO_ACCOUNT = 'Don\'t have an account? Register one here.';
+  INVALID_UNAME_OR_PASS = 'Invalid username or password.';
+
   state = {
     usernamePlaceholder: 'Username',
     passwordPlaceholder: 'Password',
@@ -104,8 +108,8 @@ class Login extends Component {
               </Button>
             </div>
           </form>
-          <p className={this.props.classes.registerLink} onClick={this.handleRegister}>Don't have an account? Register one here.</p>
-          <p className={this.props.classes.failureMessage}>{this.state.loginFailed ? 'Invalid username or password.' : ''}</p>
+          <p className={this.props.classes.registerLink} onClick={this.handleRegister}>{this.NO_ACCOUNT}</p>
+          <p className={this.props.classes.failureMessage}>{this.state.loginFailed ? this.INVALID_UNAME_OR_PASS : ''}</p>
         </div>
       );
     }
