@@ -30,7 +30,7 @@ class BookingDialog extends Component {
   FILL_OUT_ALL_FIELDS = 'Please fill out all the fields.';
   DIALOG_TITLE = `${this.props.dialogType} a Booking`;
   BOOKING_NAME = 'Booking Name (Max 50 chars)';
-  LOCATION = 'Location (Max 200 chars)';
+  DESCRIPTION = 'Description (Max 200 chars)';
 
   state = {
     showMissingFieldsError: false,
@@ -38,7 +38,6 @@ class BookingDialog extends Component {
   }
 
   static propTypes = {
-    // setDialogState: PropTypes.func,
     onClose: PropTypes.func,
     onSubmit: PropTypes.func,
     dialogType: PropTypes.string,
@@ -52,22 +51,22 @@ class BookingDialog extends Component {
     dialogType: constants.DIALOG_TYPE.ADD,
     selectedBooking: {
       name: '',
-      location: '',
+      description: '',
     }
   };
 
   nameInput = React.createRef();
-  locationInput = React.createRef();
+  descriptionInput = React.createRef();
 
   areFieldsMissing = () => 
     this.nameInput.current.value === '' 
-    || this.locationInput.current.value === '';
+    || this.descriptionInput.current.value === '';
 
   handleSubmit = () => {
     if (!this.areFieldsMissing()) {
       this.props.onSubmit({
         name: this.nameInput.current.value, 
-        location: this.locationInput.current.value, 
+        description: this.descriptionInput.current.value, 
         datetime: moment()
       });
       this.props.onClose();
@@ -92,18 +91,18 @@ class BookingDialog extends Component {
       />
   );
 
-  renderLocationTextField = () => (
+  renderDescriptionTextField = () => (
     <TextField
       autoFocus
       multiline
       fullWidth
       rows="4"
       margin="dense"
-      id="location"
-      label={this.LOCATION}
+      id="description"
+      label={this.DESCRIPTION}
       type="text"
-      defaultValue={this.props.selectedBooking.location}
-      inputRef={this.locationInput}
+      defaultValue={this.props.selectedBooking.description}
+      inputRef={this.descriptionInput}
       inputProps={{ maxLength: 200 }}
       />
   );
@@ -111,7 +110,7 @@ class BookingDialog extends Component {
   renderDialogContent = () => (
     <DialogContent>
       {this.renderNameTextField()}
-      {this.renderLocationTextField()}
+      {this.renderDescriptionTextField()}
       <p className={this.state.showMissingFieldsError ? this.props.classes.errorMessage : this.props.classes.hidden}>
         {this.FILL_OUT_ALL_FIELDS}
       </p>

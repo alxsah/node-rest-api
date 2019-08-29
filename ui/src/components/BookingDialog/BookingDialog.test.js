@@ -9,10 +9,10 @@ test('Component renders without crashing', () => {
   ReactDOM.unmountComponentAtNode(div);
 });
 
-test('areFieldsMissing returns true if locationInput is blank', () => {
+test('areFieldsMissing returns true if descriptionInput is blank', () => {
   const bookingDialog = shallow(<BookingDialog />);
   const instance = bookingDialog.dive().instance();
-  instance.locationInput = {
+  instance.descriptionInput = {
     current: {
       value: ''
     }
@@ -28,7 +28,7 @@ test('areFieldsMissing returns true if locationInput is blank', () => {
 test('areFieldsMissing returns true if nameInput is blank', () => {
   const bookingDialog = shallow(<BookingDialog />);
   const instance = bookingDialog.dive().instance();
-  instance.locationInput = {
+  instance.descriptionInput = {
     current: {
       value: 'test'
     }
@@ -41,10 +41,10 @@ test('areFieldsMissing returns true if nameInput is blank', () => {
   expect(instance.areFieldsMissing()).toEqual(true);
 });
 
-test('areFieldsMissing returns false if nameInput and locationInput are populated', () => {
+test('areFieldsMissing returns false if nameInput and descriptionInput are populated', () => {
   const bookingDialog = shallow(<BookingDialog />);
   const instance = bookingDialog.dive().instance();
-  instance.locationInput = {
+  instance.descriptionInput = {
     current: {
       value: 'test'
     }

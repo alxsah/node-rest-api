@@ -157,7 +157,7 @@ class MaterialTable extends Component {
       <TableRow>
         <TableCell></TableCell>
       <TableCell>Name</TableCell>
-      <TableCell>Location</TableCell>
+      <TableCell>Description</TableCell>
       <TableCell>Date</TableCell>
       <TableCell className="icon-cell">
         <div className={this.props.classes.iconContainer}>
@@ -198,7 +198,7 @@ class MaterialTable extends Component {
               <Checkbox checked={this.isSelected(row._id)} />
             </TableCell>
             <TableCell>{row.name}</TableCell>
-            <TableCell>{row.location}</TableCell>
+            <TableCell>{row.description}</TableCell>
             <TableCell>{row.date}</TableCell>
             <TableCell></TableCell>
           </TableRow>

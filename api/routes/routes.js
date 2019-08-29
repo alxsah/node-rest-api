@@ -1,5 +1,4 @@
 const jwt = require('express-jwt');
-
 const config = require('../config');
 const bookingController = require('../controllers/booking');
 const loginController = require('../controllers/login');
@@ -13,7 +12,7 @@ const auth = jwt({
 
 const appRouter = (app) => {
   app.get('/', (req, res) => {
-    res.status(200).send('rest API test');
+    res.status(200).send();
   });
 
   app.post('/login', loginController.login);

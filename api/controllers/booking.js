@@ -12,7 +12,7 @@ const formatBookings = (bookings) => {
 
 const getAllBookings = (req, res, next) => {
   Booking.find({userId: req.payload._id})
-      .select('name datetime location')
+      .select('name datetime description')
       .lean()
       .exec()
       .then((bookings) => {
@@ -24,7 +24,7 @@ const getAllBookings = (req, res, next) => {
 
 const getBooking = (req, res, next) => {
   Booking.findById(req.params.id)
-      .select('name datetime location')
+      .select('name datetime description')
       .lean()
       .exec()
       .then((booking) => {
@@ -45,7 +45,7 @@ const createBooking = (req, res, next) => {
     userId: req.payload._id,
     name: req.body.name,
     datetime: req.body.datetime,
-    location: req.body.location,
+    description: req.body.description,
   });
 
   booking.save()
@@ -65,7 +65,8 @@ const deleteBooking = (req, res, next) => {
 const updateBooking = (req, res, next) => {
   Booking.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
-    date: req.body.date,
+    datetime: req.body.datetime,
+    description: req.body.description,
   })
       .exec()
       .then(() => res.status(200).send('Updated booking successfully.'))
