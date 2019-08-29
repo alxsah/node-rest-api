@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 // Set up database connection
-const dbUrl = `mongodb://${config.development.mongo_hostname}:${config.development.mongo_port}/`;
+const dbUrl = `mongodb://${config[process.env.NODE_ENV].mongo_hostname}:${config[process.env.NODE_ENV].mongo_port}/`;
 mongoose.connect(dbUrl);
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
@@ -56,7 +56,7 @@ app.use((err, req, res, next) => {
 });
 
 app.on('ready', () => {
-  const server = app.listen(config.development.app_port, () => {
+  const server = app.listen(config[process.env.NODE_ENV].app_port, () => {
     console.log('Service running on port ', server.address().port);
   });
 });

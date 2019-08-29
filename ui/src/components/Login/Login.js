@@ -58,7 +58,7 @@ class Login extends Component {
     this.props.setPassword(event.target.value);
   }
 
-  handleClick = (event) => {
+  handleClick = event => {
     event.preventDefault();
     axios.post(endpoint, {
       username: this.props.username,

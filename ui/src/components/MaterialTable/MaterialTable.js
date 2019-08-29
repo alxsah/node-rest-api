@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import config from '../../config.json';
+import constants from '../../util/constants';
 
 const bookingsEndpoint = `http://${config[process.env.NODE_ENV].hostname}:${config[process.env.NODE_ENV].port}/bookings`;
 
@@ -88,7 +89,8 @@ class MaterialTable extends Component {
         headers: {
           'Content-Type': 'application/json',
         }
-      }).then(() => {
+      })
+      .then(() => {
         // Ensure no row is selected after deletion
         this.setState({selected: ''});
         this.getUserBookings();
@@ -96,7 +98,7 @@ class MaterialTable extends Component {
     }
 
   setDialogState = (dialogType, state) =>
-    dialogType === 'Add' ? this.setState({isAddDialogOpen: state})
+    dialogType === constants.DIALOG_TYPE.ADD ? this.setState({isAddDialogOpen: state})
     : this.setState({isEditDialogOpen: state});
 
     handleAddCompletion = booking => {
@@ -108,11 +110,10 @@ class MaterialTable extends Component {
         }
       })
       .then(() => {
-        this.setDialogState('Add', false);
+        this.setDialogState(constants.DIALOG_TYPE.ADD, false);
         this.getUserBookings();
-      }).catch(() => {
-        this.setState({error: true});
-      });
+      })
+      .catch(() => this.setState({error: true}));
     }
 
   isNothingSelected = () => this.state.selected.length === 0;
@@ -127,27 +128,27 @@ class MaterialTable extends Component {
       headers: {
         'Content-Type': 'application/json',
       }
-    }).then(() => {
-      this.setDialogState('Edit', false);
+    })
+    .then(() => {
+      this.setDialogState(constants.DIALOG_TYPE.EDIT, false);
       this.getUserBookings();
-    }).catch(() => {
-      this.setState({error: true});
-    });
+    })
+    .catch(() => this.setState({error: true}));
   }
 
   renderDialogs = () => (
     <div>
       <BookingDialog 
-      dialogType="Add"
+      dialogType={constants.DIALOG_TYPE.ADD}
         open={this.state.isAddDialogOpen}
-        setDialogState={this.setDialogState}
-        handleCompletion={this.handleAddCompletion}/>
+        onClose={() => this.setState({isAddDialogOpen: !this.state.isAddDialogOpen})}
+        onSubmit={this.handleAddCompletion}/>
       <BookingDialog
-        dialogType="Edit"
+        dialogType={constants.DIALOG_TYPE.EDIT}
         selectedBooking={this.getSelectedBooking()}
         open={this.state.isEditDialogOpen} 
-        setDialogState={this.setDialogState}
-        handleCompletion={this.handleEditCompletion}/>
+        onClose={() => this.setState({isEditDialogOpen: !this.state.isEditDialogOpen})}
+        onSubmit={this.handleEditCompletion}/>
     </div>
   );
 
@@ -161,13 +162,13 @@ class MaterialTable extends Component {
       <TableCell className="icon-cell">
         <div className={this.props.classes.iconContainer}>
           <IconButton
-            onClick={() => this.setDialogState('Add', true)}
+            onClick={() => this.setDialogState(constants.DIALOG_TYPE.ADD, true)}
             className={this.props.classes.addIcon}
             aria-label="Add">
             <AddIcon />
           </IconButton>
           <IconButton
-            onClick={() => this.setDialogState('Edit', true)}
+            onClick={() => this.setDialogState(constants.DIALOG_TYPE.EDIT, true)}
             className={`${this.props.classes.editIcon} ${this.isNothingSelected() ? this.props.classes.hidden: ''}`}
             aria-label="Edit">
             <EditIcon />

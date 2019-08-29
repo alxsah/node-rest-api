@@ -5,12 +5,12 @@ import BookingDialog from './BookingDialog';
 
 test('Component renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<BookingDialog open={true}/>, div);
+  ReactDOM.render(<BookingDialog />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
 
 test('areFieldsMissing returns true if locationInput is blank', () => {
-  const bookingDialog = shallow(<BookingDialog open={true}/>);
+  const bookingDialog = shallow(<BookingDialog />);
   const instance = bookingDialog.dive().instance();
   instance.locationInput = {
     current: {
@@ -26,7 +26,7 @@ test('areFieldsMissing returns true if locationInput is blank', () => {
 });
 
 test('areFieldsMissing returns true if nameInput is blank', () => {
-  const bookingDialog = shallow(<BookingDialog open={true}/>);
+  const bookingDialog = shallow(<BookingDialog />);
   const instance = bookingDialog.dive().instance();
   instance.locationInput = {
     current: {
@@ -42,7 +42,7 @@ test('areFieldsMissing returns true if nameInput is blank', () => {
 });
 
 test('areFieldsMissing returns false if nameInput and locationInput are populated', () => {
-  const bookingDialog = shallow(<BookingDialog open={true}/>);
+  const bookingDialog = shallow(<BookingDialog />);
   const instance = bookingDialog.dive().instance();
   instance.locationInput = {
     current: {

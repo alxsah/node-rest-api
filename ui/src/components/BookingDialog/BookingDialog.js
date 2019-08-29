@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import constants from '../../util/constants';
 
 const styles = theme => ({
   errorMessage: {
@@ -37,8 +38,9 @@ class BookingDialog extends Component {
   }
 
   static propTypes = {
-    setDialogState: PropTypes.func,
-    handleCompletion: PropTypes.func,
+    // setDialogState: PropTypes.func,
+    onClose: PropTypes.func,
+    onSubmit: PropTypes.func,
     dialogType: PropTypes.string,
     selectedBooking: PropTypes.object,
     open: PropTypes.bool,
@@ -46,7 +48,8 @@ class BookingDialog extends Component {
   }
 
   static defaultProps = {
-    dialogType: 'Add',
+    open: false,
+    dialogType: constants.DIALOG_TYPE.ADD,
     selectedBooking: {
       name: '',
       location: '',
@@ -56,27 +59,18 @@ class BookingDialog extends Component {
   nameInput = React.createRef();
   locationInput = React.createRef();
 
-  handleClose = () => this.props.setDialogState(this.props.dialogType, false);
-
-  handleChange = name => event => {
-    this.setState({
-      showMissingFieldsError: false,
-      [name]: event.target.value,
-    });
-  };
-
   areFieldsMissing = () => 
     this.nameInput.current.value === '' 
     || this.locationInput.current.value === '';
 
   handleSubmit = () => {
     if (!this.areFieldsMissing()) {
-      this.props.setDialogState(this.props.dialogType, false);
-      this.props.handleCompletion({
+      this.props.onSubmit({
         name: this.nameInput.current.value, 
         location: this.locationInput.current.value, 
         datetime: moment()
       });
+      this.props.onClose();
     } else {
       this.setState({showMissingFieldsError: true})
     }
@@ -129,7 +123,7 @@ class BookingDialog extends Component {
       <Button onClick={this.handleSubmit} color="primary">
         Confirm
       </Button>
-      <Button onClick={this.handleClose} color="secondary">
+      <Button onClick={this.props.onClose} color="secondary">
         Cancel
       </Button>
     </DialogActions>
