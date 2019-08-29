@@ -57,6 +57,7 @@ Example booking document:
     {
         "_id": "5bcf9a8724aeed010fbe0469",
         "name": "My Booking",
-        "date": "2018-02-04T00:00:00.000Z",
+        "datetime": "2018-02-04T00:00:00.000Z",
+        "description": "This is a description of the booking"
     }
 ~~~
