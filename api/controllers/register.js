@@ -5,8 +5,8 @@ const register = (req, res) => {
     res.status(400).json({error: 'Missing required fields.'});
   } else {
     const re = /[^a-zA-Z0-9]/;
-    if (re.test(req.body.username) || re.test(req.body.password)) {
-      res.status(400).json({error: 'Invalid characters in username or password.'});
+    if (re.test(req.body.username)) {
+      res.status(400).json({error: 'Invalid characters in username.'});
     }
   }
   User.find({username: req.body.username})
